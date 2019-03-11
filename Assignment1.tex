@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\title{Report (Assignment 1)}
+\author{Bhavya Patel (brp93) 
+\\Amanda Hin (ahh57)
+\\Eric Hua (eh370)}
+\date{February,27 2019}
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+{\Large \textbf{\underline{Implementation of Maze:}}\\\par}
+{\large We have implemented a DPS Maze with a 30\% block rate random grid. In order to ease comparison of algorithm performance and display, we choose randomized grid to test A* algorithm. We have also attached the data used in compressed file.} 
+
+\section{\underline{Question 1:}}
+$\bullet$ {\large \textbf{\underline{part(a):} Explain in your report why the first move of the agent for the example search problem from Figure 8 is to the east rather than the north given that the agent does not know initially which cells are blocked.}\\\par}
+{\large Given that the agent uses A* algorithm, it will move in direction to the shortest presumed unblocked path. Because the shortest path is from east direction, the agent moves in east rather than north direction. Also, since the agent does not have any information regarding unblocked cells, it will move in east direction, will then hit the blocked cell and backtrack.}\\
+$\\\bullet$ {\large \textbf{\underline{part(b):}This project argues that the agent is guaranteed to reach the target if it is not separated from it by blocked cells. Give a convincing argument that the agent in finite grid worlds indeed either reaches the target or discovers that this is impossible in finite time. Prove that the number of moves of the agent until it reaches the target or discovers that this is impossible is bounded from above by the number of unblocked cells squared.}\\\par}
+{\large A path can be drawn from starting point to target,if the target is discovered. If not then, the list will remain empty. Also, in worst case the agent will visit all the unblocked cells, in order to find a target and draw a path. Thus if every cell has been visited and the list remains empty (since the target was not found) ,the algorithm will stop running and will return that there is no visible path.}
+
+\newpage
+\section{\underline{Question 2:}}
+$\bullet$ {\large \textbf{Repeated Forward A* needs to break ties to decide which cell to expand next if several cells have the same smallest f-value. It can either break ties in favor of cells with smaller g-values or in favor of cells with larger g-values. Implement and compare both versions of Repeated Forward A* with respect to their runtime or, equivalently, number of expanded cells. Explain your observations in detail, that is, explain what you observed and give a reason for the observation.}\\\par}
+{\large In the project we implemented both versions of Repeated Forward A*, one that favors smaller g-values and one that favors larger g-values. From our observations of running both algorithms 50 times, the version that broke ties using larger g-values had an average of 2503.66 expanded cells. The version that broke ties using smaller g-values had an average of 3341.58 expanded cells. This directly affected the runtime of the algorithms with Repeated A* with larger g-values being faster on average, with an average runtime of 9.98 ms.}\\
+\section{\underline{Question 3:}}
+$\bullet$ {\large \textbf{Implement and compare Repeated Forward A* and Repeated Backward A* with respect to their runtime or, equivalently, number of expanded cells. Explain your observations in detail, that is, explain what you observed and give a reason for the observation. Both versions of Repeated A* should break ties among cells with the same f-value in favor of cells with larger g-values and remaining ties in an identical way, for example randomly.}\\\par}
+{\large Repeated Forward A* and Repeated Backward A* broke ties with larger g-values. When the expanded cells were compared, Repeated Backward A* had way more expanded nodes compared to Repeated Forward A*. Repeated Forward A* had an average of 2520 expanded cells while Repeated Forward B* had an average of 2707 expanded cells. The expanded cells depended on the grid and the starting point of the agent that is closer to the wall. The agent has to explore more nodes if there are less walls. If the blocked cells are farther from the agent’s starting point, the branching factor of the path is greater.}\\
+\section{\underline{Question 4:}}
+$\bullet$ {\large \textbf{The project argues that “the Manhattan distances are consistent in gridworlds in which the agent can move only in the four main compass directions.” Prove that this is indeed the case.}\\\par}
+{\large The Manhattan distances are consistent because only the shortest possible horizontal and vertical distance between two points are calculated. Since the agent can move only in the four main compass directions, it does not change the value of the distances no matter what combination of movements. The heuristic value will be overestimated if the agent can move diagonally.}
+\newpage
+$\\\bullet$ {\large \textbf{Furthermore, it is argued that “The h-values h\textsubscript{new}(s) ... are not only admissible but also consistent.” Prove that Adaptive A* leaves initially consistent h-values consistent even if action costs can increase.}\\\par}
+{\large We will begin with proving the h-values h\textsubscript{new}(s) are consistent first.\\“A heuristic is consistent if for every node n, every successor n' of n generated by any action a”.\\Notation:\\The h\textsubscript{new}(s) value is calculated by the difference of g(goal) and g(s) that is \\h\textsubscript{new}(s) = g(goal)- g(s).n will be the node and n’ will be the successor node.
+The action (a) cost (c) will be one for moving from n to n’ - c(n,a,n’).\\ By the definition of triangle inequality: h(n) $\leq$ c(n,a,n’) + h(n’). It holds true for the A* algorithm where the h-values are consistent.
+We substitute the new h-value where h\textsubscript{new}(n)= g(goal) - g(n) and h\textsubscript{new}(n’)= g(goal) - g(n’).Now we have g(goal) - g(n)  $\leq$ c(n,a,n’) + g(goal) - g(n’).
+Then, we can obtain the result of g(n)  $\geq$ g (n’) - c(n,a,n’).
+\\The distance between g(n) and g(n’) will always be one because the agent can only move with the four main compass direction. Thus, If the g(n’) is larger than g(n), by subtracting the action cost, their values will become equal. If g(n’) is smaller than g(n), then it will always smaller along with the subtraction cost. Therefore, this triangle inequality will always hold true and the h-values h\textsubscript{new}(s) are consistent. \\The h-values consistent even if action costs can increase.
+By considering the triangle inequality, h\textsubscript{new}(n)  $\leq$ c(n,a,n’) + h\textsubscript{new}(n’).
+If the action cost is increased, it still holds the inequality. It becomes h\textsubscript{new}(n)  $\leq$ c(n,a,n’) + h\textsubscript{new}(n’)  $\leq$ cost\textsubscript{new}(n,a,n’) + h\textsubscript{new}(n’).\\Therefore, the heuristic will remains consistent no matter the increasing cost.}\\
+\section{\underline{Question 5:}}
+$\bullet$ {\large \textbf{Implement and compare Repeated Forward A* and Adaptive A* with respect to their runtime. Explain your observations in detail, that is, explain what you observed and give a reason for the observation. Both search algorithms should break ties among cells with the same f-value in favor of cells with larger g-values and remaining ties in an identical way, for example randomly.}\\\par}
+{\large In all, Adaptive A* is faster than Forward A*. In correlation with our test values, Adaptive A* ran six times faster and had fewer expanded nodes by almost four times. Adaptive A* is way faster because it has much less expanded nodes and therefore takes a different path as compared to Forward A*. The new H value using g(s\textsubscript{goal}) - g(s) is $\leq$ to h(s). Adaptive A* avoids the path that Forward A* takes which explains why there are less expanded nodes. If the equation gave a  h\textsubscript{new}(s) that is close to the  h\textsubscript{old}(s), Adaptive A* would take the same path as Forward A*.}
+\newpage
+\section{\underline{Question 6:}}
+$\bullet$ {\large \textbf{You performed all experiments in gridworlds of size 101 × 101 but some real-time computer games use maps whose number of cells is up to two orders of magnitude larger than that. It is then especially important to limit the amount of information that is stored per cell. For example, the tree-pointers can be implemented with only two bits per cell. Suggest additional ways to reduce the memory consumption of your implementations further. Then, calculate the amount of memory that they need to operate on gridworlds of size 1001 × 1001 and the largest gridworld that they can operate on within a memory limit of 4 MBytes.}\\\par}
+{\large Short can be used instead of int for the node positions. Since the grid is 1001x1001, the x and y values only need to range from 0 to 1000 which is the smallest amount since a byte ranges from 0 to 255.\\Each node can have a max of four neighbors. If the map does not have that many obstacles, the size of the node will contain other nodes. It will be a long tree and nodes that can be very large because nodes can store nodes. An ArrayList is used that has a default size of 10 will have an overhead of 48 bytes plus 4 bytes per entry which is a total of 88 bytes (\textbf{\url{https://www.ibm.com/developerworks/library/j-codetoheap/#ArrayList}}).To reduce this, the neighbor should not be stored but instead accessed through the global maze which contains all nodes. Each node can have five pairs of shorts. One pair for the position of the node and the rest for the neighbors. Each pair will be used to get to the node and as a result, only 10 bytes will be used instead of 88 bytes.\\We can also use 1 bit per boolean. There are two booleans so only 2 bits are needed. There are booleans for the north, south, west, and east walls that are only used for the DFS maze. \\Instead of using double for the f,g, and h values, float should be used instead. There are 194 bits of memory per node. The maze takes 24. 24 Mbytes is a big improvement.}\\
+\section{\underline{External Resources (Reference)}}
+$\bullet$ {\large Generalized Adaptive A* \\\par\underline{\url{http://idm-lab.org/bib/abstracts/papers/aamas08b.pdf}}}\\
+$\\\bullet$ {\large A* search Algorithm\\\par \underline{\url{https://en.wikipedia.org/wiki/A*\_search\_algorithm}}}
+
+\end{document}
